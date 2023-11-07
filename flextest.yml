@@ -1,0 +1,14 @@
+integrations:
+  - name: nri-flex
+    timeout: 5m
+    interval: 1m
+    config:
+      name: linuxbashmonitor
+      apis:
+        - name: shellscriptmonitoring
+          commands:
+            - run: sudo ./etc/newrelic-infra/integrations.d/greet.sh
+              split: horizontal
+              split_by: \s+
+              set_header: [running,failed,success]
+              timeout: 300000
