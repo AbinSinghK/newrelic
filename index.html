@@ -5,7 +5,7 @@
 <title>Kaviya ❤️ Abin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Premium romantic fonts -->
+<!-- Premium Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
@@ -18,45 +18,30 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #ffdde1, #ee9ca7, #fad0c4);
   font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7, #fad0c4);
 }
 
-/* 🌈 Animated dreamy gradient */
+/* dreamy glow */
 body::before {
   content: "";
   position: absolute;
   inset: -20%;
   background: radial-gradient(circle at top left,
-    rgba(255,105,180,0.5),
+    rgba(255,105,180,0.45),
     rgba(255,182,193,0.4),
-    rgba(255,255,255,0.2)
+    rgba(255,255,255,0.25)
   );
   filter: blur(90px);
-  animation: dreamyMove 18s ease-in-out infinite alternate;
+  animation: glowMove 18s ease-in-out infinite alternate;
 }
 
-@keyframes dreamyMove {
+@keyframes glowMove {
   0% { transform: translate(-10%, -10%); }
   100% { transform: translate(10%, 10%); }
 }
 
-/* ✨ floating particles */
-.particle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.7);
-  animation: twinkle 5s infinite ease-in-out;
-}
-
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; transform: scale(0.7); }
-  50% { opacity: 1; transform: scale(1.4); }
-}
-
-/* 💎 Card */
+/* card */
 .card {
   position: relative;
   width: 360px;
@@ -68,26 +53,19 @@ body::before {
     0 40px 90px rgba(0,0,0,0.25),
     0 0 80px rgba(255,105,180,0.45);
   text-align: center;
-  animation: cardEnter 1.4s cubic-bezier(.22,.61,.36,1);
   z-index: 2;
 }
 
-@keyframes cardEnter {
-  from { opacity: 0; transform: translateY(80px) scale(0.65); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* 💖 Title */
+/* title */
 h1 {
   font-family: 'Playfair Display', serif;
   font-size: 34px;
-  margin: 0 0 8px;
+  margin-bottom: 10px;
   color: #ff2e63;
-  letter-spacing: 1px;
-  animation: softPulse 2.5s infinite;
+  animation: pulse 2.4s infinite;
 }
 
-@keyframes softPulse {
+@keyframes pulse {
   0%,100% { transform: scale(1); }
   50% { transform: scale(1.08); }
 }
@@ -98,21 +76,21 @@ p {
   margin-bottom: 36px;
 }
 
-/* ❤️ Buttons */
+/* buttons */
 button {
   padding: 14px 36px;
   font-size: 16px;
   border-radius: 50px;
   border: none;
   font-weight: 600;
-  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
 }
 
 #yes {
   background: linear-gradient(135deg, #ff2e63, #ff7a9c);
   color: white;
   box-shadow: 0 14px 35px rgba(255,46,99,0.6);
-  animation: yesGlow 2.2s infinite;
+  animation: yesGlow 2s infinite;
 }
 
 @keyframes yesGlow {
@@ -121,15 +99,21 @@ button {
   100% { box-shadow: 0 0 15px rgba(255,46,99,0.6); }
 }
 
-/* 🚫 NO button — continuous floating & untouchable */
+/* NO button – ALWAYS visible & untouchable */
 #no {
   position: fixed;
+  padding: 14px 36px;
+  font-size: 16px;
+  border-radius: 50px;
+  border: none;
+  font-weight: 600;
   background: #f4f4f4;
   color: #555;
-  pointer-events: none; /* ❌ never clickable */
+  pointer-events: none; /* 🚫 cannot touch */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* 💌 Message */
+/* message */
 #message {
   display: none;
   margin-top: 28px;
@@ -147,11 +131,14 @@ button {
   <p>Will you be my Valentine?</p>
 
   <button id="yes">Yes ❤️</button>
-  <button id="no">No 💔</button>
+</div>
 
-  <div id="message">
+<button id="no">No 💔</button>
+
+<div id="message" style="position:fixed; inset:0; display:none; justify-content:center; align-items:center; text-align:center;">
+  <div class="card">
     Yayyy 🥰💞<br>
-    You make my world softer & brighter 💖<br><br>
+    You make my world brighter 💖<br><br>
     Happy Valentine’s Day ❤️<br>
     — Yours, Abin
   </div>
@@ -162,70 +149,58 @@ const yes = document.getElementById("yes");
 const no = document.getElementById("no");
 const msg = document.getElementById("message");
 
-/* 🌬️ continuous floating motion */
-let angle = 0;
-let posX = window.innerWidth / 2;
-let posY = window.innerHeight * 0.72;
+/* initial NO position */
+let baseX = window.innerWidth / 2 - no.offsetWidth / 2;
+let baseY = window.innerHeight * 0.75;
 
-/* initial position */
-no.style.left = posX + "px";
-no.style.top = posY + "px";
+let t = 0;
 
-function animateNo() {
-  angle += 0.01; // 🐢 slow floating speed
+/* continuous slow floating */
+function floatNo() {
+  t += 0.01;
 
-  const floatX = Math.sin(angle) * 60;
-  const floatY = Math.cos(angle * 0.8) * 25;
+  let x = baseX + Math.sin(t) * 60;
+  let y = baseY + Math.cos(t * 0.8) * 25;
 
-  no.style.left = Math.min(
-    window.innerWidth - no.offsetWidth - 20,
-    Math.max(20, posX + floatX)
-  ) + "px";
+  /* keep inside screen */
+  x = Math.max(20, Math.min(window.innerWidth - no.offsetWidth - 20, x));
+  y = Math.max(20, Math.min(window.innerHeight - no.offsetHeight - 20, y));
 
-  no.style.top = Math.min(
-    window.innerHeight - no.offsetHeight - 20,
-    Math.max(20, posY + floatY)
-  ) + "px";
+  no.style.left = x + "px";
+  no.style.top = y + "px";
 
-  requestAnimationFrame(animateNo);
+  requestAnimationFrame(floatNo);
 }
-animateNo();
+floatNo();
 
-/* 🧲 repulsion if finger/mouse comes close */
-document.addEventListener("mousemove", repel);
-document.addEventListener("touchmove", e => repel(e.touches[0]));
+/* repel on approach */
+document.addEventListener("mousemove", e => repel(e.clientX, e.clientY));
+document.addEventListener("touchmove", e => {
+  const t = e.touches[0];
+  repel(t.clientX, t.clientY);
+});
 
-function repel(e) {
+function repel(px, py) {
   const r = no.getBoundingClientRect();
   const cx = r.left + r.width / 2;
   const cy = r.top + r.height / 2;
 
-  const dx = cx - e.clientX;
-  const dy = cy - e.clientY;
+  const dx = cx - px;
+  const dy = cy - py;
   const dist = Math.hypot(dx, dy);
 
   if (dist < 140) {
-    posX += dx * 0.15;
-    posY += dy * 0.15;
+    baseX += dx * 0.2;
+    baseY += dy * 0.2;
   }
 }
 
 /* YES */
 yes.addEventListener("click", () => {
-  yes.style.display = "none";
+  document.querySelector(".card").style.display = "none";
   no.style.display = "none";
-  msg.style.display = "block";
+  msg.style.display = "flex";
 });
-
-/* ✨ background particles */
-for (let i = 0; i < 45; i++) {
-  const p = document.createElement("div");
-  p.className = "particle";
-  p.style.left = Math.random() * 100 + "vw";
-  p.style.top = Math.random() * 100 + "vh";
-  p.style.animationDelay = Math.random() * 5 + "s";
-  document.body.appendChild(p);
-}
 </script>
 
 </body>
