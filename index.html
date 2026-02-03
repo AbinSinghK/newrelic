@@ -5,8 +5,7 @@
 <title>Kaviya ❤️ Abin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Premium Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 * { box-sizing: border-box; }
@@ -14,112 +13,117 @@
 body {
   margin: 0;
   height: 100vh;
+  font-family: 'Poppins', sans-serif;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #ffdde1, #ee9ca7, #fad0c4);
+  background: radial-gradient(circle at top, #ffafbd, #ffc3a0);
 }
 
-/* dreamy glow */
+/* soft glowing background */
 body::before {
   content: "";
   position: absolute;
-  inset: -20%;
-  background: radial-gradient(circle at top left,
-    rgba(255,105,180,0.45),
-    rgba(255,182,193,0.4),
-    rgba(255,255,255,0.25)
-  );
-  filter: blur(90px);
-  animation: glowMove 18s ease-in-out infinite alternate;
+  inset: 0;
+  background: linear-gradient(120deg, #ff6f91, #ffc75f, #ff9671);
+  animation: bgGlow 14s infinite alternate;
+  opacity: 0.35;
 }
 
-@keyframes glowMove {
-  0% { transform: translate(-10%, -10%); }
-  100% { transform: translate(10%, 10%); }
+@keyframes bgGlow {
+  from { filter: blur(20px); }
+  to   { filter: blur(45px); }
 }
 
-/* card */
+/* glass card */
 .card {
   position: relative;
-  width: 360px;
-  padding: 48px 34px;
-  border-radius: 32px;
-  background: rgba(255,255,255,0.28);
-  backdrop-filter: blur(30px);
-  box-shadow:
-    0 40px 90px rgba(0,0,0,0.25),
-    0 0 80px rgba(255,105,180,0.45);
+  width: 340px;
+  padding: 42px 30px;
   text-align: center;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(25px);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+  animation: cardIn 1.2s ease forwards;
   z-index: 2;
 }
 
-/* title */
-h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 34px;
-  margin-bottom: 10px;
-  color: #ff2e63;
-  animation: pulse 2.4s infinite;
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(60px) scale(0.7); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@keyframes pulse {
+h1 {
+  color: #ff2e63;
+  font-size: 30px;
+  margin-bottom: 8px;
+  animation: heartbeat 2s infinite;
+}
+
+@keyframes heartbeat {
   0%,100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
+  50% { transform: scale(1.1); }
 }
 
 p {
   font-size: 17px;
   color: #444;
-  margin-bottom: 36px;
+  margin-bottom: 30px;
 }
 
 /* buttons */
 button {
-  padding: 14px 36px;
+  padding: 14px 32px;
   font-size: 16px;
-  border-radius: 50px;
+  border-radius: 40px;
   border: none;
   font-weight: 600;
-  cursor: pointer;
 }
 
 #yes {
-  background: linear-gradient(135deg, #ff2e63, #ff7a9c);
+  background: linear-gradient(135deg, #ff2e63, #ff6f91);
   color: white;
-  box-shadow: 0 14px 35px rgba(255,46,99,0.6);
-  animation: yesGlow 2s infinite;
+  box-shadow: 0 10px 25px rgba(255,46,99,0.6);
+  animation: pulseGlow 1.8s infinite;
 }
 
-@keyframes yesGlow {
-  0% { box-shadow: 0 0 15px rgba(255,46,99,0.6); }
-  50% { box-shadow: 0 0 45px rgba(255,46,99,1); }
-  100% { box-shadow: 0 0 15px rgba(255,46,99,0.6); }
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 rgba(255,46,99,0.5); }
+  50% { box-shadow: 0 0 25px rgba(255,46,99,1); }
+  100% { box-shadow: 0 0 0 rgba(255,46,99,0.5); }
 }
 
-/* NO button – ALWAYS visible & untouchable */
+/* NO button – smooth & untouchable */
 #no {
-  position: fixed;
-  padding: 14px 36px;
-  font-size: 16px;
-  border-radius: 50px;
-  border: none;
-  font-weight: 600;
-  background: #f4f4f4;
+  background: #f1f1f1;
   color: #555;
-  pointer-events: none; /* 🚫 cannot touch */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  position: fixed;
+  left: 50%;
+  top: 72%;
+  transform: translateX(-50%);
+  pointer-events: none; /* 🚫 never clickable */
+  transition: left 0.8s ease, top 0.8s ease; /* 🐢 slow floating */
 }
 
 /* message */
 #message {
   display: none;
-  margin-top: 28px;
+  margin-top: 25px;
   font-size: 18px;
   color: #ff2e63;
-  font-family: 'Playfair Display', serif;
+}
+
+/* floating hearts */
+.heart {
+  position: absolute;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(110vh) scale(0.9); opacity: 1; }
+  to   { transform: translateY(-10vh) scale(1.4); opacity: 0; }
 }
 </style>
 </head>
@@ -128,19 +132,17 @@ button {
 
 <div class="card">
   <h1>Kaviya 💖</h1>
-  <p>Will you be my Valentine?</p>
+  <p>Will you be my Valentine? 💌</p>
 
   <button id="yes">Yes ❤️</button>
-</div>
+  <button id="no">No 💔</button>
 
-<button id="no">No 💔</button>
-
-<div id="message" style="position:fixed; inset:0; display:none; justify-content:center; align-items:center; text-align:center;">
-  <div class="card">
-    Yayyy 🥰💞<br>
-    You make my world brighter 💖<br><br>
-    Happy Valentine’s Day ❤️<br>
-    — Yours, Abin
+  <div id="message">
+    Yayyyy 🥰💞<br>
+    You are my favorite notification 💖<br>
+    My today, tomorrow & always ❤️<br><br>
+    Happy Valentine’s Day 💕<br>
+    — Yours, Abin ❤️
   </div>
 </div>
 
@@ -149,58 +151,57 @@ const yes = document.getElementById("yes");
 const no = document.getElementById("no");
 const msg = document.getElementById("message");
 
-/* initial NO position */
-let baseX = window.innerWidth / 2 - no.offsetWidth / 2;
-let baseY = window.innerHeight * 0.75;
+/* escape sensitivity */
+const SAFE_DISTANCE = 140;
 
-let t = 0;
+/* mouse + touch */
+document.addEventListener("mousemove", e => checkDistance(e.clientX, e.clientY));
+document.addEventListener("touchmove", e => {
+  const t = e.touches[0];
+  checkDistance(t.clientX, t.clientY);
+});
 
-/* continuous slow floating */
-function floatNo() {
-  t += 0.01;
+function checkDistance(x, y) {
+  const rect = no.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
 
-  let x = baseX + Math.sin(t) * 60;
-  let y = baseY + Math.cos(t * 0.8) * 25;
+  const dist = Math.hypot(x - cx, y - cy);
+  if (dist < SAFE_DISTANCE) moveSlowly();
+}
 
-  /* keep inside screen */
-  x = Math.max(20, Math.min(window.innerWidth - no.offsetWidth - 20, x));
-  y = Math.max(20, Math.min(window.innerHeight - no.offsetHeight - 20, y));
+/* 🌬️ slow, bounded movement */
+function moveSlowly() {
+  const margin = 20;
+
+  const maxX = window.innerWidth - no.offsetWidth - margin;
+  const maxY = window.innerHeight - no.offsetHeight - margin;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
 
   no.style.left = x + "px";
   no.style.top = y + "px";
-
-  requestAnimationFrame(floatNo);
-}
-floatNo();
-
-/* repel on approach */
-document.addEventListener("mousemove", e => repel(e.clientX, e.clientY));
-document.addEventListener("touchmove", e => {
-  const t = e.touches[0];
-  repel(t.clientX, t.clientY);
-});
-
-function repel(px, py) {
-  const r = no.getBoundingClientRect();
-  const cx = r.left + r.width / 2;
-  const cy = r.top + r.height / 2;
-
-  const dx = cx - px;
-  const dy = cy - py;
-  const dist = Math.hypot(dx, dy);
-
-  if (dist < 140) {
-    baseX += dx * 0.2;
-    baseY += dy * 0.2;
-  }
 }
 
-/* YES */
+/* YES click */
 yes.addEventListener("click", () => {
-  document.querySelector(".card").style.display = "none";
+  yes.style.display = "none";
   no.style.display = "none";
-  msg.style.display = "flex";
+  msg.style.display = "block";
 });
+
+/* hearts */
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "❤️";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = Math.random() * 18 + 16 + "px";
+  h.style.animationDuration = Math.random() * 4 + 6 + "s";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 8000);
+}, 600);
 </script>
 
 </body>
